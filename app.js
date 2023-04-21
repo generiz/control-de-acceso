@@ -1,5 +1,5 @@
 import { generateSecret, verifyToken } from './auth.js';
-
+import express from 'express';
 const express = require('express');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
