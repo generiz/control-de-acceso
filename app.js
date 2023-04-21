@@ -1,4 +1,3 @@
-const encodeUtf8 = require('encode-utf8');
 const express = require('express');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
