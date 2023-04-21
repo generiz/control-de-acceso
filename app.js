@@ -1,3 +1,5 @@
+const encodeUtf8 = require('encode-utf8/index.cjs');
+
 const express = require('express');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
