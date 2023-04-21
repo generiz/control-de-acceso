@@ -4,15 +4,15 @@
     "description": "Un modelo de control de acceso con Google Authenticator",
     "main": "app.js",
     "scripts": {
-      "start": "node app.js"
+        "start": "node app.js"
     },
     "dependencies": {
-      "express": "^4.17.1",
-      "speakeasy": "^2.0.0",
-      "qrcode": "^1.4.4"
+        "encode-utf8": "^2.0.0",
+        "express": "^4.17.1",
+        "qrcode": "^1.4.4",
+        "speakeasy": "^2.0.0"
     },
     "engines": {
-      "node": "14.x"
+        "node": "14.x"
     }
-  }
-  
+}
