@@ -1,3 +1,6 @@
+import { generateSecret, verifyToken } from './auth.js';
+
+
 const encodeUtf8 = require('encode-utf8/index.cjs');
 
 const express = require('express');
