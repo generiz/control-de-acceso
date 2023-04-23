@@ -1,0 +1,35 @@
+Aplicación de autenticación de doble factor
+Esta es una aplicación de autenticación de doble factor que utiliza el algoritmo Time-Based One-Time Password (TOTP) para generar tokens de autenticación de un solo uso.
+
+Instalación y configuración
+Para instalar y ejecutar esta aplicación, sigue los siguientes pasos:
+
+Clona este repositorio en tu computadora: git clone https://github.com/tu-usuario/tu-repositorio.git
+Ingresa al directorio del proyecto: cd tu-repositorio
+Instala las dependencias del proyecto: npm install
+Crea un archivo .env en la raíz del proyecto con las siguientes variables de entorno:
+bash
+Copy code
+PORT=3000
+JWT_SECRET=un-secreto-muy-secreto
+Ejecuta el servidor de desarrollo: npm start
+Abre tu navegador web y entra a la URL http://localhost:3000
+Uso
+Generar un nuevo token
+Para generar un nuevo token de autenticación, entra a la URL http://localhost:3000/generate en tu navegador web. La página te mostrará un código QR que puedes escanear con cualquier aplicación de autenticación de TOTP (como Google Authenticator). También te mostrará una clave secreta que debes guardar en un lugar seguro.
+
+Validar un token
+Para validar un token de autenticación, envía una petición POST a la URL http://localhost:3000/validate con el siguiente cuerpo:
+
+json
+Copy code
+{
+  "token": "tu-token",
+  "secret": "tu-clave-secreta"
+}
+Reemplaza tu-token con el token de autenticación que generaste previamente, y tu-clave-secreta con la clave secreta que te mostró la aplicación al generar el token.
+
+La aplicación te responderá con un objeto JSON que contiene el campo verified. Este campo será true si el token es válido, o false si no lo es.
+
+Contribuciones
+Si quieres contribuir a este proyecto, siéntete libre de hacer un pull request o abrir un issue. ¡Todas las contribuciones son bienvenidas!
