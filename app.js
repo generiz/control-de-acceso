@@ -1,31 +1,24 @@
-import { generateSecret, verifyToken } from './auth.js';
 import express from 'express';
-const express = require('express');
-const speakeasy = require('speakeasy');
-const QRCode = require('qrcode');
+import { generateSecret, verifyToken } from './auth.js';
+import { toDataURL } from 'qrcode';
 
 const app = express();
 app.use(express.json());
 
-app.get('/generate', (req, res) => {
-  const secret = speakeasy.generateSecret({ length: 20 });
-  QRCode.toDataURL(secret.otpauth_url, (err, data_url) => {
+app.get('/generate', async (req, res) => {
+    console.log('Handling /generate request'); // Agrego esta linea 
+    const secret = generateSecret();
+    const dataUrl = await toDataURL(secret.otpauth_url);
     res.json({
       secret: secret.base32,
-      dataURL: data_url,
+      dataURL: dataUrl,
       otpURL: secret.otpauth_url,
     });
   });
-});
 
 app.post('/validate', (req, res) => {
   const { token, secret } = req.body;
-  const verified = speakeasy.totp.verify({
-    secret: secret,
-    encoding: 'base32',
-    token: token,
-  });
-
+  const verified = verifyToken(secret, token);
   res.json({ verified: verified });
 });
 

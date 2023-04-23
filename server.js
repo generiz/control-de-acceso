@@ -1,11 +1,31 @@
 import express from 'express';
-const app = express();
+import { generateSecret, verifyToken } from './auth.js';
+import { toDataURL } from 'qrcode';
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+const app = express();
+app.use(express.json());
+
+app.get('/generate', async (req, res) => {
+  const secret = generateSecret();
+  const dataUrl = await toDataURL(secret.otpauth_url);
+  res.json({
+    secret: secret.base32,
+    dataURL: dataUrl,
+    otpURL: secret.otpauth_url,
+  });
+});
+
+app.post('/validate', (req, res) => {
+  const { token, secret } = req.body;
+  const verified = verifyToken(secret, token);
+  res.json({ verified: verified });
+});
+
+app.get('/test', (req, res) => {
+  res.send('Test successful!');
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
