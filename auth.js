@@ -11,11 +11,23 @@ export async function generateQRCode(secret) {
   return dataUrl;
 }
 
-export function verifyToken(secret, token) {
+export function verifyToken(token, secret) {
+  const secretKey = secret.base32;
+  const tokenStr = token.toString(); // asegurarse de que token es una cadena de texto
+  if (isNaN(tokenStr)) { // verificar que token sea un valor numérico
+    return false;
+  }
+  const tokenNum = parseInt(tokenStr); // convertir token a número entero
   const verified = speakeasy.totp.verify({
-    secret: secret.ascii,
+    secret: secretKey,
     encoding: 'ascii',
-    token: token,
+    token: tokenNum, // utilizar tokenNum en lugar de token.toString()
   });
   return verified;
 }
+
+
+
+
+
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Prueba de autenticación de dos factores</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@latest/qrcode.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <h1>QR Code Generator and Two-Factor Authentication</h1>
+      <img id="qrcode-img" src="" alt="QR Code Image">
+      <button id="generate-btn">Generate QR Code</button>
+    </div>
+    <form id="auth-form">
+      <div>
+        <label for="secret">Código secreto:</label>
+        <input type="text" id="secret" name="secret" readonly>
+      </div>
+      <div>
+        <label for="token">Código de autenticación:</label>
+        <input type="text" id="token" name="token">
+      </div>
+      <button type="submit">Verificar</button>
+    </form>
+    <div id="result"></div>
+    <script>
+      const form = document.getElementById('auth-form');
+      const resultDiv = document.getElementById('result');
+      const qrcodeImg = document.querySelector('#qrcode-img');
+      const generateBtn = document.querySelector('#generate-btn');
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const secret = form.elements['secret'].value;
+        const token = form.elements['token'].value;
+
+        axios.post('/validate', { secret: secret, token: token })
+          .then((response) => {
+            const verified = response.data.verified;
+            if (verified) {
+              resultDiv.innerText = 'Autenticación exitosa';
+            } else {
+              resultDiv.innerText = 'Código incorrecto';
+            }
+          })
+          .catch((error) => {
+            resultDiv.innerText = 'Error en la verificación';
+            console.error(error);
+          });
+      });
+
+      generateBtn.addEventListener('click', async () => {
+        const response = await fetch('/generate');
+        const data = await response.json();
+        qrcodeImg.src = data.dataURL;
+        form.elements['secret'].value = data.secret;
+        new QRCode(qrcodeImg, {
+          text: data.otpURL,
+          width: 256,
+          height: 256,
+        });
+      });
+
+      
+    </script>
+  </body>
+</html>
+
+
+
+
